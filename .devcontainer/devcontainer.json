@@ -11,6 +11,22 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "customizations": {
+    "codespaces": {
+      "repositories": {
+        "MarcSkovMadsen/*": {
+          "permissions": "write-all"
+        },
+        "holoviz/*": {
+          "permissions": "write-all"
+        },
+        "holoviz-dev/*": {
+          "permissions": "write-all"
+        },
+        "panel-extensions/*": {
+          "permissions": "write-all"
+        }
+      }
+    },
     "vscode": {
       "extensions": [
         "anthropic.claude-code",
