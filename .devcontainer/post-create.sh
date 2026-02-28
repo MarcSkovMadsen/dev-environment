@@ -44,11 +44,11 @@ HOLOVIZ_REPOS=(
   "holoviz/holoviews"
   "holoviz/param"
   "holoviz/lumen"
-  "MarcSkovMadsen/panel-live"
-  "MarcSkovMadsen/panel-reactflow"
-  "MarcSkovMadsen/panel-splitjs"
+  "panel-extensions/panel-live"
+  "panel-extensions/panel-reactflow"
+  "panel-extensions/panel-splitjs"
   "MarcSkovMadsen/holoviz-mcp"
-  "MarcSkovMadsen/holoviz-agents"
+  "cdcore09/holoviz-agents"
 )
 
 # Personal repos (uv-based)
@@ -78,7 +78,7 @@ done
 
 # --- Set up fork remotes for HoloViz repos ---
 echo "Setting up fork remotes..."
-for repo in "panel" "holoviews" "param" "lumen" "panel-material-ui"; do
+for repo in "panel" "holoviews" "param" "lumen" "panel-material-ui" "panel-live" "panel-reactflow" "panel-splitjs" "holoviz-agents"; do
   if [ -d "$REPOS_DIR/$repo" ]; then
     cd "$REPOS_DIR/$repo"
     gh repo fork --remote-only 2>/dev/null || true
