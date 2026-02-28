@@ -1,0 +1,78 @@
+{
+  "name": "HoloViz Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "32gb",
+    "storage": "64gb"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "charliermarsh.ruff",
+        "davidanson.vscode-markdownlint",
+        "detachhead.basedpyright",
+        "github.copilot-chat",
+        "github.copilot",
+        "github.vscode-github-actions",
+        "jjjermiah.pixi-vscode",
+        "mechatroner.rainbow-csv",
+        "mhutchie.git-graph",
+        "ms-python.debugpy",
+        "ms-python.mypy-type-checker",
+        "ms-python.python",
+        "ms-python.vscode-python-envs",
+        "ms-toolsai.datawrangler",
+        "ms-toolsai.jupyter-keymap",
+        "ms-toolsai.jupyter-renderers",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.vscode-jupyter-cell-tags",
+        "ms-toolsai.vscode-jupyter-slideshow",
+        "njpwerner.autodocstring",
+        "randomfractalsinc.vscode-data-preview",
+        "redhat.vscode-yaml",
+        "ritwickdey.liveserver",
+        "tamasfe.even-better-toml",
+        "wesbos.theme-cobalt2"
+      ],
+      "settings": {
+        "workbench.colorTheme": "Cobalt2",
+        "files.autoSave": "off",
+        "extensions.autoUpdate": false,
+        "editor.rulers": [100],
+        "explorer.confirmPasteNative": false,
+        "git.enableSmartCommit": true,
+        "jupyter.interactiveWindow.creationMode": "single",
+        "jupyter.interactiveWindow.textEditor.executeSelection": true,
+        "jupyter.widgetScriptSources": [
+          "jsdelivr.com",
+          "unpkg.com"
+        ],
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["tests"],
+        "python.testing.unittestEnabled": false,
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+          },
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "remote.autoForwardPortsSource": "hybrid"
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "remoteUser": "vscode"
+}

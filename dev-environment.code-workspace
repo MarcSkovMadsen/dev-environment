@@ -1,0 +1,19 @@
+{
+  "folders": [
+    { "path": "." },
+    { "path": "../repos/panel" },
+    { "path": "../repos/panel-material-ui" },
+    { "path": "../repos/holoviews" },
+    { "path": "../repos/param" },
+    { "path": "../repos/lumen" },
+    { "path": "../repos/panel-live" },
+    { "path": "../repos/panel-reactflow" },
+    { "path": "../repos/panel-splitjs" },
+    { "path": "../repos/holoviz-mcp" },
+    { "path": "../repos/holoviz-agents" },
+    { "path": "../repos/blog" },
+    { "path": "../repos/my_panel_app" },
+    { "path": "../repos/holoviz-mcp-ui" }
+  ],
+  "settings": {}
+}
