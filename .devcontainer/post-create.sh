@@ -69,14 +69,14 @@ echo "Installing JupyterLab..."
 pip install jupyterlab jupyter_bokeh ipykernel
 
 # --- Clone repositories ---
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" && pwd)"
-DEV_ENV_DIR="$(dirname "$SCRIPT_DIR")"
-DEFAULT_REPOS_DIR="$(cd "$DEV_ENV_DIR/.." && pwd)/repos"
-REPOS_DIR="${REPOS_DIR:-$DEFAULT_REPOS_DIR}"
+# --- Clone repositories ---
+REPOS_DIR="/workspaces/"
 mkdir -p "$REPOS_DIR"
 
+echo "Using REPOS_DIR: $REPOS_DIR"
+
 # HoloViz repos (pixi-based)
-HOLOVIZ_REPOS=(
+REPOS=(
   "holoviz/panel"
   "holoviz/panel-material-ui"
   "holoviz/holoviews"
@@ -85,15 +85,9 @@ HOLOVIZ_REPOS=(
   "panel-extensions/panel-live"
   "panel-extensions/panel-reactflow"
   "panel-extensions/panel-splitjs"
-  "MarcSkovMadsen/holoviz-mcp"
-  "cdcore09/holoviz-agents"
-)
-
-# Personal repos (uv-based)
-PERSONAL_REPOS=(
+  "MarcSkovMadsen/holoviz-mcp"  
   "MarcSkovMadsen/blog"
-  "MarcSkovMadsen/my_panel_app"
-  "MarcSkovMadsen/holoviz-mcp-ui"
+  "MarcSkovMadsen/holoviz-mcp"
 )
 
 clone_repo_if_available() {
@@ -117,24 +111,8 @@ clone_repo_if_available() {
 }
 
 echo "Cloning HoloViz repos..."
-for repo in "${HOLOVIZ_REPOS[@]}"; do
+for repo in "${REPOS[@]}"; do
   clone_repo_if_available "$repo"
-done
-
-echo "Cloning personal repos..."
-for repo in "${PERSONAL_REPOS[@]}"; do
-  clone_repo_if_available "$repo"
-done
-
-# --- Set up fork remotes for HoloViz repos ---
-echo "Setting up fork remotes..."
-for repo in "panel" "holoviews" "param" "lumen" "panel-material-ui" "panel-live" "panel-reactflow" "panel-splitjs" "holoviz-agents"; do
-  if [ -d "$REPOS_DIR/$repo" ]; then
-    (
-      cd "$REPOS_DIR/$repo"
-      gh repo fork --remote-only 2>/dev/null || true
-    )
-  fi
 done
 
 echo "=== Setup complete! ==="
