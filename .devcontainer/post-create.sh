@@ -34,7 +34,10 @@ echo "Installing JupyterLab..."
 pip install jupyterlab jupyter_bokeh ipykernel
 
 # --- Clone repositories ---
-REPOS_DIR="$HOME/repos"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" && pwd)"
+DEV_ENV_DIR="$(dirname "$SCRIPT_DIR")"
+DEFAULT_REPOS_DIR="$(cd "$DEV_ENV_DIR/.." && pwd)/repos"
+REPOS_DIR="${REPOS_DIR:-$DEFAULT_REPOS_DIR}"
 mkdir -p "$REPOS_DIR"
 
 # HoloViz repos (pixi-based)
@@ -58,31 +61,44 @@ PERSONAL_REPOS=(
   "MarcSkovMadsen/holoviz-mcp-ui"
 )
 
+clone_repo_if_available() {
+  local repo="$1"
+  local name target_dir
+  name="$(basename "$repo")"
+  target_dir="$REPOS_DIR/$name"
+
+  if [ -d "$target_dir" ]; then
+    echo "  Skipping $repo (already exists at $target_dir)"
+    return
+  fi
+
+  if ! gh repo view "$repo" >/dev/null 2>&1; then
+    echo "  Warning: Skipping $repo (not found or no access)"
+    return
+  fi
+
+  echo "  Cloning $repo..."
+  gh repo clone "$repo" "$target_dir" -- --depth 1 || echo "  Warning: Failed to clone $repo"
+}
+
 echo "Cloning HoloViz repos..."
 for repo in "${HOLOVIZ_REPOS[@]}"; do
-  name=$(basename "$repo")
-  if [ ! -d "$REPOS_DIR/$name" ]; then
-    echo "  Cloning $repo..."
-    gh repo clone "$repo" "$REPOS_DIR/$name" -- --depth 1 || echo "  Warning: Failed to clone $repo"
-  fi
+  clone_repo_if_available "$repo"
 done
 
 echo "Cloning personal repos..."
 for repo in "${PERSONAL_REPOS[@]}"; do
-  name=$(basename "$repo")
-  if [ ! -d "$REPOS_DIR/$name" ]; then
-    echo "  Cloning $repo..."
-    gh repo clone "$repo" "$REPOS_DIR/$name" -- --depth 1 || echo "  Warning: Failed to clone $repo"
-  fi
+  clone_repo_if_available "$repo"
 done
 
 # --- Set up fork remotes for HoloViz repos ---
 echo "Setting up fork remotes..."
 for repo in "panel" "holoviews" "param" "lumen" "panel-material-ui"; do
   if [ -d "$REPOS_DIR/$repo" ]; then
-    cd "$REPOS_DIR/$repo"
-    gh repo fork --remote-only 2>/dev/null || true
-    cd -
+    (
+      cd "$REPOS_DIR/$repo"
+      gh repo fork --remote-only 2>/dev/null || true
+    )
   fi
 done
 
