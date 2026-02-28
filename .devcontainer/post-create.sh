@@ -3,6 +3,41 @@ set -euo pipefail
 
 echo "=== Setting up HoloViz Dev Environment ==="
 
+# --- System dependencies ---
+SYSTEM_PACKAGES=(
+  libglib2.0-0
+  libatk1.0-0
+  libatk-bridge2.0-0
+  libnss3
+  libnspr4
+  libcups2
+  libdrm2
+  libdbus-1-3
+  libatspi2.0-0
+  libxcomposite1
+  libxdamage1
+  libxfixes3
+  libxrandr2
+  libgbm1
+  libxkbcommon0
+  libpango-1.0-0
+  libcairo2
+  libasound2t64
+)
+
+missing_packages=()
+for package in "${SYSTEM_PACKAGES[@]}"; do
+  if ! dpkg -s "$package" >/dev/null 2>&1; then
+    missing_packages+=("$package")
+  fi
+done
+
+if [ "${#missing_packages[@]}" -gt 0 ]; then
+  echo "Installing system dependencies: ${missing_packages[*]}..."
+  sudo apt-get update
+  sudo apt-get install -y "${missing_packages[@]}"
+fi
+
 # --- Git configuration ---
 git config --global user.name "Marc Skov Madsen"
 git config --global user.email "marc.skov.madsen@gmail.com"
